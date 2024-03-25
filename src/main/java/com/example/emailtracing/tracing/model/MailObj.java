@@ -19,5 +19,7 @@ public class MailObj {
     @Column
     private Long userID;
     @Column
+    private Long campainID;
+    @Column
     private String content;
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -40,6 +41,10 @@ public class UserServiceImpl implements UserService{
             userDTO.setFullName(user.getFullName());
             userDTO.setUpdatedAt(user.getUpdatedAt());
             userDTO.setCreatedAt(user.getCreatedAt());
+            // print infoHashMap - media info
+            for(Map.Entry<String, InfoMedia> entry : infoHashMap.entrySet()){
+                System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
             return userDTO;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

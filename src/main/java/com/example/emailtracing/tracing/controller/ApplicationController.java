@@ -1,8 +1,10 @@
 package com.example.emailtracing.tracing.controller;
 
 import com.example.emailtracing.tracing.model.Campain;
+import com.example.emailtracing.tracing.model.MailObj;
 import com.example.emailtracing.tracing.model.User;
 import com.example.emailtracing.tracing.service.CampainService;
+import com.example.emailtracing.tracing.service.MailObjService;
 import com.example.emailtracing.tracing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ public class ApplicationController {
     private CampainService campainService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private MailObjService mailObjService;
 
     /**
      * Get all campains
@@ -116,5 +120,20 @@ public class ApplicationController {
     @GetMapping("/delete-user/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+    }
+
+    @GetMapping("/start-campain/{id}")
+    public void startCampain(@PathVariable Long id) {
+        List<User> userList = userService.getAllUser();
+        for(User user : userList) {
+            // send email to user
+            System.out.println("Send email to " + user.getEmail());
+            MailObj mailObj = new MailObj();
+            mailObj.setUserID(user.getUserId());
+            mailObj.setCampainID(id);
+            mailObj.setContent("This is a content of campain: " + campainService.getCampainById(id).getCampainName());
+            mailObjService.createMailObj(mailObj);
+            System.out.println("Email sent to " + user.getEmail() + " successfully");
+        }
     }
 }
