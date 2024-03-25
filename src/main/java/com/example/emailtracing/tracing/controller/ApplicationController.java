@@ -1,15 +1,15 @@
 package com.example.emailtracing.tracing.controller;
 
 import com.example.emailtracing.tracing.model.Campain;
+import com.example.emailtracing.tracing.model.User;
 import com.example.emailtracing.tracing.service.CampainService;
+import com.example.emailtracing.tracing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @Controller
@@ -17,6 +17,8 @@ import java.util.List;
 public class ApplicationController {
     @Autowired
     private CampainService campainService;
+    @Autowired
+    private UserService userService;
 
     /**
      * Get all campains
@@ -66,5 +68,53 @@ public class ApplicationController {
     @GetMapping("/delete-campain/{id}")
     public void deleteCampain(@PathVariable Long id) {
         campainService.deleteCampain(id);
+    }
+
+    /**
+     * Get all users
+     * @return: List of users
+     */
+    @GetMapping("/user-list")
+    public ResponseEntity<Object> getAllUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
+    }
+
+    /**
+     * Create a new user
+     * @param user: User object
+     * @return: User object
+     */
+    @PostMapping("/create-user")
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.createUser(user));
+    }
+
+    /**
+     * Get user by id
+     * @param id: User id
+     * @return: User object
+     */
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object> getUserById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id));
+    }
+
+    /**
+     * Update user
+     * @param user: User object
+     * @return: User object
+     */
+    @PostMapping("/update-user")
+    public ResponseEntity<Object> updateUser(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(user));
+    }
+
+    /**
+     * Delete user
+     * @param id: User id
+     */
+    @GetMapping("/delete-user/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }
